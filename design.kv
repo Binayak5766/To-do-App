@@ -1,0 +1,174 @@
+<LoginScreen>:
+    GridLayout:
+        cols: 1
+        GridLayout:
+            cols: 1
+            padding: 15, 15
+            spacing: 20, 20
+            Label:
+                id: name
+                text: "Hello, Binayak"
+                font_size: '20sp'
+                size_hint: 0.1, 0.3
+            TextInput:
+                id: todo
+                hint_text: "To-do list"
+                size_hint: 2.5, 2.5
+            RelativeLayout:
+                GridLayout:
+                    cols: 3
+                    padding: 55, 55
+                    spacing: 50, 80
+                    Button:
+                        text: "Progress \nTracker"
+                        on_press: root.go_progress()
+                        size_hint: 0.01, 0.1
+                        background_color: 1, 1, 1, 0
+                        opacity: 1 if self.state == 'normal' else 0.5
+                    Button:
+                        text: "Daily Note"
+                        on_press: root.go_dailynote()
+                        size_hint: 0.01, 0.1
+                        background_color: 1, 1, 1, 0
+                        opacity: 1 if self.state == 'normal' else 0.5
+                    Button:
+                        text: "Tasks for \nToday"
+                        on_press: root.tasks_today()
+                        size_hint: 0.01, 0.1
+                        background_color: 1, 1, 1, 0
+                        opacity: 1 if self.state == 'normal' else 0.5
+                RelativeLayout:
+                    rows: 1
+                    Button:
+                        text: "Exit"                       
+                        on_press: root.exit()
+                        size_hint: 0.1, 0.1
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+                        background_color: 1, 1, 1, 0
+                        opacity: 1 if self.state == 'normal' else 0.5
+
+<ProgressScreen>:
+    GridLayout:
+        cols: 1
+        Label:
+            id: task-input
+            text: "Add Task/Sub-task"
+            size_hint: 0.1, 0.25
+        GridLayout:
+            cols: 2
+            spacing: 20, 20
+            GridLayout:
+                cols: 2
+                spacing: 5, 5
+                padding: 5, 5
+                size_hint: 2.75, 2.75
+                TextInput:
+                    id: tasks_add
+                    hint_text: "Add Tasks"
+                TextInput:
+                    id: subtasks_add
+                    hint_text: "Add Sub-tasks (only 5 to each task)"
+            RelativeLayout:
+                GridLayout:
+                    rows: 7
+                    padding: 15, 15
+                    spacing: 20, 20
+                    Button:
+                        id: view
+                        text: "View All"
+                        background_color: 1, 1, 1, 0
+                        opacity: 1 if self.state == 'normal' else 0.5
+                        on_press: root.view_all()
+                    Button:
+                        id: add-task
+                        text: "Add Task"
+                        background_color: 1, 1, 1, 0
+                        opacity: 1 if self.state == 'normal' else 0.5
+                        on_press: root.add_task(root.ids.tasks_add.text)
+                    Button:
+                        id: add-subtask
+                        text: "Add Subtask"
+                        background_color: 1, 1, 1, 0
+                        opacity: 1 if self.state == 'normal' else 0.5
+                        on_press: root.add_subtask(root.ids.tasks_add.text, root.ids.subtasks_add.text)
+                    Button:
+                        id: update
+                        text: "Update"
+                        background_color: 1, 1, 1, 0
+                        opacity: 1 if self.state == 'normal' else 0.5
+                        on_press: root.update(root.ids.tasks_add.text,root.ids.subtasks_add.text)
+                    Button:
+                        id: delete
+                        text: "Clear"
+                        background_color: 1, 1, 1, 0
+                        opacity: 1 if self.state == 'normal' else 0.5
+                        on_press: root.clear()
+                    Button:
+                        text: "Back"
+                        id: back
+                        on_press: root.back()
+                        background_color: 1, 1, 1, 0
+                        opacity: 1 if self.state == 'normal' else 0.5
+                    Button:
+                        id: exit
+                        text: "Exit"
+                        on_press: root.exit()
+                        background_color: 1, 1, 1, 0
+                        opacity: 1 if self.state == 'normal' else 0.5
+
+
+<DailyNoteScreen>:
+    GridLayout:
+        cols: 1
+        padding: 15, 15
+        spacing: 10, 10
+        Label:
+            id: date
+            text: ""
+            size_hint: 0.1, 0.25
+        TextInput:
+            id: print
+            hint_text: "Place to write daily tasks."
+            size_hint: 2.5, 2.5
+        RelativeLayout:
+            GridLayout:
+                cols: 5
+                spacing: 5, 15
+                Button:
+                    text: "View All"
+                    id: view-all
+                    background_color: 1, 1, 1, 0
+                    opacity: 1 if self.state == 'normal' else 0.5
+                    on_press: root.view()
+                Button:
+                    text: "Save"
+                    id: save
+                    background_color: 1, 1, 1, 0
+                    opacity: 1 if self.state == 'normal' else 0.5
+                    on_press: root.save(root.ids.print.text)
+                Button:
+                    text: "Clear"
+                    id: clear
+                    background_color: 1, 1, 1, 0
+                    opacity: 1 if self.state == 'normal' else 0.5
+                    on_press: root.clear()
+                Button:
+                    text: "Back"
+                    id: back
+                    on_press: root.back()
+                    background_color: 1, 1, 1, 0
+                    opacity: 1 if self.state == 'normal' else 0.5
+                Button:
+                    text: "Exit"
+                    id: exit
+                    on_press: root.exit()
+                    background_color: 1, 1, 1, 0
+                    opacity: 1 if self.state == 'normal' else 0.5
+
+<RootWidget>:
+    LoginScreen:
+        name: "Login_screen"
+    ProgressScreen:
+        name: "Progress_screen"
+    DailyNoteScreen:
+        name: "Dailynote_screen"
