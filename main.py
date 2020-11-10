@@ -35,7 +35,7 @@ class LoginScreen(Screen):
                 break
             except:
                 pass
-        
+                
         if flag == 0:
             self.ids.todo.text = "There is no tasks scheduled for today."
         else:
