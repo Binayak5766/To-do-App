@@ -5,7 +5,9 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
-import json, datetime
+from plyer import notification
+import json
+import datetime
 
 Builder.load_file("design.kv")
 #The tasks are stored in a json file in a dictionary format.
@@ -30,6 +32,7 @@ class LoginScreen(Screen):
                     flag = 1
                     for j in range(i,len(var)):                           #Prints out the tasks for today.
                         tasks = tasks + var[j]
+                break
             except:
                 pass
         
@@ -151,6 +154,38 @@ class ProgressScreen(Screen):
     def exit(self):                  #This function closes the window
         Window.close()
 
+class MainApp(App):
+    def build(self):
+        self.notify_me()
+        return RootWidget()
+
+    @staticmethod
+    def notify_me():
+        file = open("To-do.txt", 'r')
+        var = file.readlines()                             #Stores the content of the file in a list.
+        file.close()
+        tasks = ""
+        flag = 0
+        date_today = str(datetime.date.today())
+        date_today = datetime.datetime.strptime(date_today,'%Y-%m-%d')
+        for i in range(0,len(var)):
+            try:
+                check = var[i]
+                check = check[:-2]
+                check = datetime.datetime.strptime(check, '%Y-%m-%d')                #Checks the dates in the file with todays date.
+                if check == date_today:
+                    flag = 1
+                    for j in range(i,len(var)):                           #Prints out the tasks for today.
+                        tasks = tasks + var[j]
+            except:
+                pass
+
+        if(len(var) == 0):
+            notification.notify(title='Tasks', message='No tasks scheduled for today.', ticker='r')
+        else:
+            notification.notify(title='Tasks', message=tasks, ticker='r')
+
+
 class DailyNoteScreen(Screen):
     def view(self):
         file = open("To-do.txt", 'r')
@@ -159,9 +194,11 @@ class DailyNoteScreen(Screen):
         self.ids.print.text = var
 
     def save(self, daily_task):
+        t = MainApp()               #New object created to access the notify_me function to get a notification upon adding new task.
         file = open("To-do.txt", 'a')
         file.write(str(datetime.date.today()) + ":" + "\n" + daily_task + "\n")
         file.close()
+        t.notify_me()
 
     def clear(self):
         self.ids.print.text = ""
@@ -175,10 +212,6 @@ class DailyNoteScreen(Screen):
 
 class RootWidget(ScreenManager):
     pass
-
-class MainApp(App):
-    def build(self):
-        return RootWidget()
 
 if __name__ == "__main__":
     MainApp().run()
